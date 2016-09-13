@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns="pinky">
+	<node name="square_pinky" pkg="route_planning" type="move_forward_odom">
+		<param name="~robot_name"   	type="string" value="pinky/" />
+	</node> 
+	</group>
+
+	<group ns="inky">
+	<node name="square_inky" pkg="route_planning" type="move_forward_odom">
+		<param name="~robot_name"   	type="string" value="inky/" />
+	</node> 
+	</group>
+
+	<group ns="blinky">
+	<node name="square_blinky" pkg="route_planning" type="move_forward_odom">
+		<param name="~robot_name"   	type="string" value="blinky/" />
+	</node> 
+	</group>
+</launch>

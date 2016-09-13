@@ -1,0 +1,19 @@
+<launch>
+	<group ns="pinky">
+		<node name="ss_pinky" pkg="route_planning" type="square_spiral"/>
+	</group>
+
+	<group ns="inky">
+		<node name="ss_inky" pkg="route_planning" type="square_spiral">
+			<!--<param name="~robot_name"   	type="string" value="inky/" />-->
+		</node> 
+	</group>
+
+	<group ns="blinky">
+		<node name="ss_blinky" pkg="route_planning" type="square_spiral"/>
+	</group>
+
+	<group ns="clyde">
+		<node name="ss_clyde" pkg="route_planning" type="square_spiral"/> 
+	</group>
+</launch>

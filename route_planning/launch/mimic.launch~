@@ -1,0 +1,18 @@
+<launch>
+	<arg name="robot_1" value="inky"/>
+	<arg name="robot_2" value="pinky"/>
+	<arg name="robot_3" value="blinky"/>
+	<arg name="robot_4" value="clyde"/>
+	<node name="PinkyMimicsInky" pkg="route_planning" type="mimic">
+		<remap from="input/odom" to="$(arg robot_1)/odom"/>
+		<remap from="output/mobile_base/commands/velocity" to="$(arg robot_2)/cmd_vel_mux/input/teleop"/>
+	</node>
+	<node name="BlinkyMimicsInky" pkg="route_planning" type="mimic">
+		<remap from="input/odom" to="$(arg robot_1)/odom"/>
+		<remap from="output/mobile_base/commands/velocity" to="$(arg robot_3)/cmd_vel_mux/input/teleop"/>
+	</node>
+	<node name="ClydeMimicsInky" pkg="route_planning" type="mimic">
+		<remap from="input/odom" to="$(arg robot_1)/odom"/>
+		<remap from="output/mobile_base/commands/velocity" to="$(arg robot_4)/cmd_vel_mux/input/teleop"/>
+	</node>
+</launch>

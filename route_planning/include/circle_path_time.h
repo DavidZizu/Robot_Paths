@@ -1,0 +1,55 @@
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
+#include <math.h>
+
+class Circle {
+public:
+	Circle();
+	void startMotion();
+	void getParams();
+
+	//variables
+	std::string robot_name;
+	double radius, velocity;
+
+	//some required members
+	ros::Publisher pub_vel;
+	geometry_msgs::Twist vel_to_publish;
+};
+
+Circle::Circle() {
+	getParams();
+	ros::NodeHandle nh;
+	pub_vel = nh.advertise<geometry_msgs::Twist>(robot_name + "mobile_base/commands/velocity", 1);
+}
+
+void Circle::startMotion() {
+	vel_to_publish.linear.x = 0.3;
+	vel_to_publish.angular.z = 0.3;
+
+	ROS_INFO_STREAM("Circle motion has started");
+	ros::Time start = ros::Time::now();
+
+	while(ros::ok() && ros::Time::now() - start < ros::Duration(2 * M_PI / 0.3)) {
+		pub_vel.publish(vel_to_publish);
+		ros::spinOnce();
+	}
+}
+
+void Circle::getParams() {
+	//display some general info
+	ROS_INFO_STREAM("By default" << "\n\tradius: 1 m" << "\n\trobot_name: omitted" << "\n\tvelocity: 0.2 m/s");
+
+	//set the parameters
+	ros::param::param<std::string>("robot_name", robot_name, "");
+	/*if (!ros::param::get("robot_name", robot_name))
+		robot_name = "";
+	else
+		robot_name += "/";*/
+
+	if (!ros::param::get("radius", radius))
+		radius = 1;
+
+	if (!ros::param::get("velocity", velocity))
+		velocity = 0.2;
+}

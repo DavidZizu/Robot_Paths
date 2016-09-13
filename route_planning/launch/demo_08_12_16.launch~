@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns="pinky">
+	<node name="motion" pkg="route_planning" type="circle_path_time">
+		<param name="~robot_name"   	type="string" value="pinky/" />
+	</node> 
+	</group>
+</launch>

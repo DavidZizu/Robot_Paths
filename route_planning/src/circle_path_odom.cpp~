@@ -1,0 +1,10 @@
+#include "circle_time.h"
+
+int main(int argc, char** argv) {
+
+	ros::init(argc, argv, "motion");
+	Circle draw_circle;
+
+	draw_circle.startMotion();
+	ROS_INFO_STREAM("Done");
+}

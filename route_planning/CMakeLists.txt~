@@ -1,0 +1,56 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(route_planning)
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
+  geometry_msgs
+  nav_msgs
+)
+
+
+catkin_package(
+)
+
+include_directories(
+  include
+  route_planning/include
+  ${catkin_INCLUDE_DIRS}
+)
+
+## Declare a C++ executable
+add_executable(square_path src/square_path.cpp)
+add_executable(odom_position src/odom_position.cpp)
+add_executable(move_one_meter_forward_timer src/move_one_meter_forward_timer.cpp)
+
+add_executable(circle_path_odom src/circle_path_odom.cpp)
+add_executable(square_path_odom src/square_path_odom.cpp)
+add_executable(move_forward_odom src/move_forward_odom.cpp)
+add_executable(square+circle+forward src/square+circle+forward.cpp)
+add_executable(mimic src/mimic.cpp)
+
+## Specify libraries to link a library or executable target against
+target_link_libraries(square_path
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(square_path_odom
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(odom_position
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(move_forward_odom
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(move_one_meter_forward_timer
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(circle_path_odom
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(square+circle+forward
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(mimic
+   ${catkin_LIBRARIES}
+)

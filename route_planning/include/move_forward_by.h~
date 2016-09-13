@@ -1,0 +1,74 @@
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
+#include <nav_msgs/Odometry.h>
+
+class Move {
+public:
+	Move();
+
+	void startMotion();
+	void getParams();
+
+	geometry_msgs::Twist vel_to_publish;
+	ros::Publisher pub_vel;
+	ros::Subscriber sub_vel;
+
+	std::string robot_name;
+	double velocity, length, destination;
+	bool start;
+
+	void odomCallback(const nav_msgs::OdometryConstPtr &odom);
+};
+
+Move::Move() {
+	getParams();
+	ros::NodeHandle nh;
+	start = true;
+	destination = 0;
+	pub_vel = nh.advertise<geometry_msgs::Twist>(robot_name + "/pinky/mobile_base/commands/velocity", 1);
+	sub_vel = nh.subscribe(robot_name + "/pinky/odom", 1, &Move::odomCallback, this);
+}
+
+void Move::startMotion() {
+	vel_to_publish;
+
+	ros::spinOnce();
+
+	vel_to_publish.linear.x = velocity;;
+
+	while (ros::ok() && vel_to_publish.linear.x == velocity)
+		ros::spinOnce();
+}
+
+void Move::odomCallback(const nav_msgs::OdometryConstPtr &odom) {
+	
+	if (start) {
+		destination = odom->pose.pose.position.x + length;
+		start = false;
+	}
+
+	if (odom->pose.pose.position.x < destination)
+		pub_vel.publish(vel_to_publish);
+	else {
+		vel_to_publish.linear.x = 0;
+		pub_vel.publish(vel_to_publish);
+	}
+}
+
+void Move::getParams() {
+	//display some general info
+	ROS_INFO_STREAM("By default" << "\n\tlength: 0.5 m" << "\n\trobot_name: omitted" << "\n\tvelocity: 0.4 m/s");
+
+	//set the parameters
+	ros::param::param<std::string>("robot_name", robot_name, "");
+	/*if (!ros::param::get("robot_name", robot_name))
+		robot_name = "";
+	else
+		robot_name += "/";*/
+
+	if (!ros::param::get("length", length))
+		length = 0.5;
+
+	if (!ros::param::get("velocity", velocity))
+		velocity = 0.4;
+}
